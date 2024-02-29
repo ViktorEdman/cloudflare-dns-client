@@ -35,7 +35,10 @@ func main() {
 	zoneid = *zoneflag
 	token = *tokenflag
 	domain = *domainflag
-	fmt.Printf("Zone ID:%v\nAPI Token:%v\nDomain name:%v\n", zoneid, token, domain)
+	Run(zoneid, token, domain)
+}
+
+func Run(zoneid string, token string, domain string) {
 	url := "https://api.cloudflare.com/client/v4/zones/" + zoneid + "/dns_records"
 	fmt.Println(strings.Repeat("-", 26))
 	fmt.Println(time.Now())
