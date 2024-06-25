@@ -7,7 +7,7 @@ You need to have your domain registered with [Cloudflare DNS](https://www.cloudf
 
 Note that for this to work for game servers, I strongly suggest you disable the proxy functionality for your domain with Cloudflare DNS.
 
-Read more here: [How Cloudflare works](https://developers.cloudflare.com/fundamentals/concepts/how-cloudflare-works/), (Disable proxy on DNS Records)[https://developers.cloudflare.com/fundamentals/setup/manage-domains/pause-cloudflare/#disable-proxy-on-dns-records]
+Read more here: [How Cloudflare works](https://developers.cloudflare.com/fundamentals/concepts/how-cloudflare-works/), [Disable proxy on DNS Records](https://developers.cloudflare.com/fundamentals/setup/manage-domains/pause-cloudflare/#disable-proxy-on-dns-records)
 
 
 This client is a prime candidate for an automated cronjob, see below example
