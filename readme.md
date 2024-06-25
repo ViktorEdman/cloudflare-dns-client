@@ -1,7 +1,11 @@
 # Cloudflare DNS Client
 DNS Client for Cloudflare API.
 Checks your current external IP, and updates the A-record for the specified domain using the Cloudflare API.
-You need to have your domain registered with [Cloudflare DNS](https://www.cloudflare.com/en-gb/)  
+You need to have your domain registered with [Cloudflare DNS](https://www.cloudflare.com/en-gb/)
+
+Note that for this to work for game servers, I strongly suggest you disable the proxy functionality for your domain with Cloudflare DNS.
+
+Read more here: [How Cloudflare works](https://developers.cloudflare.com/fundamentals/concepts/how-cloudflare-works/)
 
 
 This client is a prime candidate for an automated cronjob, see below example
