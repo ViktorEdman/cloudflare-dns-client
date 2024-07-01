@@ -4,12 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"flag"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"sync"
 	"time"
 )
@@ -27,7 +25,7 @@ func main() {
 	flag.Parse()
 	flag.VisitAll(func(f *flag.Flag) {
 		if f.Value.String() == "" {
-			fmt.Println(f.Name + " not set!!!")
+			print(f.Name + " not set!!!")
 			flag.Usage()
 			os.Exit(1)
 		}
@@ -40,8 +38,8 @@ func main() {
 
 func Run(zoneid string, token string, domain string) {
 	url := "https://api.cloudflare.com/client/v4/zones/" + zoneid + "/dns_records"
-	fmt.Println(strings.Repeat("-", 26))
-	fmt.Println(time.Now())
+	println("--------------------------\n")
+	println(time.Now().String())
 	var externalIp, dnsIp, entryId string
 	var wg sync.WaitGroup
 	wg.Add(2)
@@ -55,17 +53,17 @@ func Run(zoneid string, token string, domain string) {
 	}()
 
 	wg.Wait()
-	fmt.Println("External IP:", externalIp)
+	println("External IP:", externalIp)
 	if len(dnsIp) == 0 {
 		log.Fatal("Failed to fetch dns ip!")
 	}
 	if dnsIp == externalIp {
-		fmt.Println("Match! No update required")
-		fmt.Println(strings.Repeat("-", 26))
+		println("Match! No update required")
+		println("--------------------------")
 		os.Exit(0)
 	}
 	updateDnsIp(token, url, entryId, externalIp)
-	fmt.Println(strings.Repeat("-", 26))
+	println("--------------------------")
 }
 
 func updateDnsIp(token string, url string, entryId string, IP string) {
@@ -88,13 +86,13 @@ func updateDnsIp(token string, url string, entryId string, IP string) {
 	if marshalError != nil {
 		log.Fatal(marshalError)
 	}
-	fmt.Println("IP updated to", patchResponse.Result.Content)
+	println("IP updated to", patchResponse.Result.Content)
 }
 
 func retrieveExternalIp() string {
-	ipCheckRes, _ := http.Get("https://checkip.amazonaws.com")
+	ipCheckRes, _ := http.Get("https://ipinfo.io/ip")
 	ipCheckBody, _ := io.ReadAll(ipCheckRes.Body)
-	externalIp := strings.TrimSpace(string(ipCheckBody))
+	externalIp := string(ipCheckBody)
 	return externalIp
 }
 
@@ -127,12 +125,12 @@ func retrieveDnsIp(url string, token string) (string, string) {
 	for i := 0; i < len(cloudflareRes.Result); i++ {
 		result := cloudflareRes.Result[i]
 		if result.Name == domain && result.Type == "A" {
-			fmt.Println(
+			println(
 				"Dns IP:",
 				result.Content,
 			)
-			dnsIp = strings.TrimSpace(result.Content)
-			entryId = strings.TrimSpace(result.ID)
+			dnsIp = result.Content
+			entryId = result.ID
 
 		}
 	}
